@@ -55,7 +55,7 @@ public class SignInApiTest {
 	 */
 	private void performApi(String email, String password) throws Exception {
 		mvc.perform(post("/sign-in").param("email", email).param("password", password)
-				.contentType(MediaType.MULTIPART_FORM_DATA).accept(MediaType.APPLICATION_FORM_URLENCODED))
+				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest());
 	}
 }

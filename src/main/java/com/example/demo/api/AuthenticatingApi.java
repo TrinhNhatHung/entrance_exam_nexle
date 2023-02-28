@@ -1,14 +1,15 @@
 package com.example.demo.api;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.TokenDto;
@@ -39,7 +40,7 @@ public class AuthenticatingApi {
 	 * @return object include inserted user information
 	 */
 	@PostMapping(path = "/sign-up")
-	public ResponseEntity<?> signUp(@ModelAttribute Users user) {
+	public ResponseEntity<?> signUp(@RequestBody Users user) {
 		try {
 			// Check validate email and password
 			if (!ValidationUtil.validateEmail(user.getEmail())
@@ -65,7 +66,7 @@ public class AuthenticatingApi {
 	 * @return object include user information, token and refresh token
 	 */
 	@PostMapping(path = "/sign-in")
-	public ResponseEntity<?> signIn(@ModelAttribute Users user) {
+	public ResponseEntity<?> signIn(@RequestBody Users user) {
 		try {
 			// Check validate email and password
 			if (!ValidationUtil.validateEmail(user.getEmail())
@@ -111,8 +112,9 @@ public class AuthenticatingApi {
 	 * @return object include token and refreshToken
 	 */
 	@PostMapping(path = "/refresh-token")
-	public ResponseEntity<?> refreshToken(@RequestParam(name = "refreshToken") String refreshToken) {
+	public ResponseEntity<?> refreshToken(@RequestBody Map<String, Object> payload) {
 		try {
+			String refreshToken = (String) payload.get("refreshToken");
 			// Get new token and new refreshToken
 			TokenDto tokenDto = tokenService.refreshToken(refreshToken);
 			return new ResponseEntity<>(tokenDto, HttpStatus.OK);

@@ -67,7 +67,6 @@ public class SignUpApiTest {
 	 */
 	private void performApi(String email, String password, String firstName, String lastName) throws Exception {
 		mvc.perform(post("/sign-up").param("email", email).param("password", password).param("firstName", firstName)
-				.param("lastName", lastName).contentType(MediaType.MULTIPART_FORM_DATA)
-				.accept(MediaType.APPLICATION_FORM_URLENCODED)).andExpect(status().isBadRequest());
+				.param("lastName", lastName).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 	}
 }
